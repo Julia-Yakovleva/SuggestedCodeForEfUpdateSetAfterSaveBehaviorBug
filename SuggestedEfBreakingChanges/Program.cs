@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -12,7 +9,7 @@ namespace IssueConsoleTemplate;
 public class Store
 {
     public int StoreId { get; set; }
-    
+
     public string Name { get; set; }
     public string CreatedAt { get; set; }
     public string? UpdatedAt { get; set; }
@@ -98,7 +95,7 @@ internal static class Program
     private static void Main()
     {
         var lastChangeTrackerDebugView = string.Empty;
-        
+
         using (var context = new Context())
         {
             context.Database.EnsureDeleted();
@@ -132,7 +129,7 @@ internal static class Program
         using (var context = new Context())
         {
             var store = context.Stores.Single();
-            
+
             Trace.Assert(store.StoreId == 1);
             Trace.Assert(store.Name == "Books");
             Trace.Assert(store.CreatedAt == "2023-01-01");
@@ -144,7 +141,7 @@ internal static class Program
             Trace.Assert(store.CreatedAt == "2023-01-01");
             Trace.Assert(store.UpdatedAt is null);
             Trace.Assert(store.Items[0].Name == "The Fellowship of the Ring");
-            
+
             Trace.Assert(
                 Regex.Replace(lastChangeTrackerDebugView, @"^\s+", string.Empty, RegexOptions.Multiline) ==
                 Regex.Replace(
@@ -182,17 +179,17 @@ Store {StoreId: -2147482647} Added
                     UpdatedAt = "2024-02-02",
                 }
             ];
-            
+
             context.ChangeTracker.DetectChanges();
             lastChangeTrackerDebugView = context.ChangeTracker.DebugView.LongView.Trim().ReplaceLineEndings();
-            
+
             context.SaveChanges();
         }
 
         using (var context = new Context())
         {
             var store = context.Stores.Single();
-            
+
             Trace.Assert(store.StoreId == 1);
             Trace.Assert(store.Name == "New Books");
             Trace.Assert(store.CreatedAt == "2023-01-01");
@@ -202,7 +199,7 @@ Store {StoreId: -2147482647} Added
             Trace.Assert(store.Items[0].StoreId == 1);
             Trace.Assert(store.Items[0].ItemCode == "lotr");
             Trace.Assert(store.Items[0].Name == "The Two Towers");
-            
+
             // I would consider the following unexpected. Either this is handled as a Delete+Insert operation pair,
             // in which case `CreatedAt` should contain `2024-02-02` and `UpdatedAt` should be `null`, or this is handled
             // as an Update operation (which it seems to be, since an `UPDATE` statement is generated), in which case
@@ -212,7 +209,7 @@ Store {StoreId: -2147482647} Added
 
             // Trace.Assert(store.Items[0].CreatedAt == "2024-02-02" && store.Items[0].UpdatedAt is null ||
             //              store.Items[0].CreatedAt == "2023-01-01" && store.Items[0].UpdatedAt == "2024-02-02");
-            
+
             Trace.Assert(
                 Regex.Replace(lastChangeTrackerDebugView, @"^\s+", string.Empty, RegexOptions.Multiline) == 
                 Regex.Replace(
