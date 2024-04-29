@@ -15,7 +15,7 @@ public class Store
     
     public string Name { get; set; }
     public string CreatedAt { get; set; }
-    public string UpdatedAt { get; set; }
+    public string? UpdatedAt { get; set; }
 
     public List<Item> Items { get; set; }
 }
@@ -27,7 +27,7 @@ public class Item
 
     public string Name { get; set; }
     public string CreatedAt { get; set; }
-    public string UpdatedAt { get; set; }
+    public string? UpdatedAt { get; set; }
 }
 
 public class Context : DbContext
