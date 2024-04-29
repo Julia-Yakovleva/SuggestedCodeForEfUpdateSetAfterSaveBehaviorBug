@@ -1,0 +1,13 @@
+﻿services:
+
+  books-mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'rootpass'
+      MYSQL_DATABASE: eftest
+      MYSQL_USER: bob
+      MYSQL_PASSWORD: 'pass'
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
